@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 // Import components for the routes
 import Login from "./pages/Login/Login";
-import Register from "./pages/register/Register";
+import Register from "./pages/Register/Register";
 import Home from "./pages/Home/Home";
 
 // Import Middleware
