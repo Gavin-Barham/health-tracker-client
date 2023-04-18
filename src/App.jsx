@@ -1,35 +1,75 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+
+// Import components for the routes
+import Login from "./pages/Login/Login";
+import Register from "./pages/register/Register";
+import Home from "./pages/Home/Home";
+
+// Import Middleware
+import getCookie from "./assets/getCookie";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const token = localStorage.getItem("access_token");
+  const [authenticated, setAuthenticated] = useState(token ? true : false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+  
+    if (token) {
+      fetch("http://localhost:3030/auth/check-token", {
+        method: "POST",
+        headers: {
+          'Authorization': token,
+        },
+      })
+      .then((res) => {
+        if (res.status !== 200) {
+          const refreshToken = getCookie("jwt");
+          fetch("http://localhost:3030/auth/refresh", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              'Cookie': `refreshToken=${refreshToken}`
+            },
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.accessToken) {
+                localStorage.setItem("access_token", data.accessToken);
+                setAuthenticated(true);
+              } else {
+                setAuthenticated(false);
+              }
+            })
+            .catch((error) => {
+              console.error("Error refreshing token:", error);
+              setAuthenticated(false);
+            });
+        } else {
+          setAuthenticated(true);
+        }
+      })
+      .catch((error) => {
+        console.error("Error checking token:", error);
+        setAuthenticated(false);
+      });
+    } else {
+      setAuthenticated(false);
+    }
+  }, []);
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+    <Routes>
+      <Route path="/login" element={<Login setAuthenticated={setAuthenticated} />} />
+      <Route path="/register" element={<Register />} />
+      {authenticated ? (
+        <Route path="/" element={<Home />} />
+      ) : (
+        <Route path="" element={<Navigate to="/login" />} />
+      )}
+    </Routes>
+  );
 }
 
-export default App
+export default App;
