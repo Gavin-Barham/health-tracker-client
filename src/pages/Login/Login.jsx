@@ -2,10 +2,9 @@ import styles from './login.module.css'
 import {useNavigate} from 'react-router-dom'
 import {useState} from 'react'
 
-export default function Login({ setAuthenticated }) {
+export default function Login({ setIsAuthenticated }) {
     const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
-        username: '',
         email: '',
         password: ''
     })
@@ -32,7 +31,7 @@ export default function Login({ setAuthenticated }) {
                     password: ''
                 })
                 localStorage.setItem('access_token',`Bearer ${data.access_token}`)
-                setAuthenticated(true)
+                setIsAuthenticated(true)
                 navigate("/");
             }
             else {
