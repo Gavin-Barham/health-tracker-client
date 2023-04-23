@@ -1,9 +1,11 @@
 import styles from './login.module.css'
 import {useNavigate} from 'react-router-dom'
-import {useState} from 'react'
+import {useState, useContext} from 'react'
+import { HealthContext } from '../../components/AppContext';
 
-export default function Login({ setIsAuthenticated }) {
+export default function Login() {
     const navigate = useNavigate();
+    const {setIsAuthenticated, setUserId} = useContext(HealthContext)
     const [formValues, setFormValues] = useState({
         email: '',
         password: ''
@@ -25,13 +27,15 @@ export default function Login({ setIsAuthenticated }) {
                 body: JSON.stringify(formValues)
             })
             const data = await res.json()
-            if (res.status === 200) {
+            if (data.message === 'OK') {
                 setFormValues({
                     email: '',
                     password: ''
                 })
-                localStorage.setItem('access_token',`Bearer ${data.access_token}`)
+                localStorage.setItem('access_token',`Bearer ${data.accessToken}`)
+                localStorage.setItem('user_id', data.userId)
                 setIsAuthenticated(true)
+                setUserId(data.userId)
                 navigate("/");
             }
             else {

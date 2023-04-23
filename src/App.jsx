@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 
 // Import components for the routes
+import {HealthContext} from "./components/AppContext"
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Home from "./pages/Home/Home";
@@ -11,8 +12,8 @@ import Home from "./pages/Home/Home";
 import getCookie from "./utils/getCookie";
 
 function App() {
-  const token = localStorage.getItem("access_token");
-  const [isAuthenticated, setIsAuthenticated] = useState(token ? true : false);
+  const {isAuthenticated, setIsAuthenticated, setUserId} = useContext(HealthContext)
+
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -31,20 +32,22 @@ function App() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              'Cookie': `refreshToken=${refreshToken}`
+              'Cookie': `jwt=${refreshToken}`
             },
           })
             .then((res) => res.json())
             .then((data) => {
               if (data.accessToken) {
                 localStorage.setItem("access_token", data.accessToken);
+                localStorage.setItem("user_id", data.userId);
                 setIsAuthenticated(true);
+                setUserId(data.userId);
               } else {
                 setIsAuthenticated(false);
               }
             })
             .catch((error) => {
-              console.error("Error refreshing token:", error.message);
+              console.error(error);
               setIsAuthenticated(false);
             });
         } else {
@@ -52,7 +55,7 @@ function App() {
         }
       })
       .catch((error) => {
-        console.error("Error checking token:", error);
+        console.error(error);
         setIsAuthenticated(false);
       });
     } else {
@@ -62,17 +65,17 @@ function App() {
 
   return (
     <div className="App">
-      <Router>
-      <Routes>
-        <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-        <Route path="/register" element={<Register />} />
-        {isAuthenticated ? (
-          <Route path="/" element={<Home />} />
-        ) : (
-          <Route path="" element={<Navigate to="/login" />} />
-        )}
-      </Routes>
-      </Router>
+        <Router>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            {isAuthenticated ? (
+              <Route path="/" element={<Home />} exact/>
+            ) : (
+              <Route path="" element={<Navigate to="/login" />} />
+            )}
+          </Routes>
+        </Router>
     </div>
   );
 }
