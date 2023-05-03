@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
 import { HealthContext } from '../../components/AppContext'
 import RowContainer from '../../components/RowContainer'
-import DatePicker from '../../components/DatePicker'
+import DateRangePicker from '../../components/DateRangePicker'
+import Nav from '../../components/Nav'
 import formatData from '../../utils/formatData'
 import styles from './home.module.css'
 
@@ -33,6 +34,11 @@ export default function Home() {
                         <div className={styles.day_container}>
                             <RowContainer nutrition={day.nutrition} />
                         </div>
+                        <hr></hr>
+                        <h4>EXERCISE</h4>
+                        <div className={styles.day_container}>
+                            <RowContainer exercise={day.exercise} />
+                        </div>
                     </div>
                 )
             })
@@ -42,9 +48,10 @@ export default function Home() {
     
     return (
         <div>
+            <Nav />
             <h1>Home</h1>
             <div className={styles.date_container}>
-                <DatePicker />
+                <DateRangePicker />
             </div>
             <div className={styles.full_container}>
                 {daysHtml}

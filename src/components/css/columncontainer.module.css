@@ -1,3 +1,54 @@
 .container {
-    border: 2px solid white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 44%;
+    background-color: antiquewhite;
+    padding: .5em;
+    gap: 1em;
+}
+.array_container {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+    width: 100%;
+
+    background-color: antiquewhite;
+    padding: .3em;
+}
+.value_container{
+    background-color: #232323;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 18vw;
+    height: 8vw;
+    border-radius: 4px;
+    color: white;
+    padding: 1.5em;
+}
+.food_container{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.array_div{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: .5em
+}
+.glucose,
+.sleep,
+.icon_container{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
 }

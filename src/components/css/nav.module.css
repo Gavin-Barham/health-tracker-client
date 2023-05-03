@@ -1,0 +1,7 @@
+.container{
+    display: flex;
+    background-color: antiquewhite;
+    border-radius: 10px;
+    padding: 1em;
+    justify-content: space-around;
+}

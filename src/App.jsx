@@ -7,6 +7,9 @@ import {HealthContext} from "./components/AppContext"
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Home from "./pages/Home/Home";
+import Medical from "./pages/Medical/Medical";
+import Nutrition from "./pages/Nutrition/Nutrition";
+import Settings from "./pages/Settings/Settings";
 
 // Import Middleware
 import getCookie from "./utils/getCookie";
@@ -70,7 +73,12 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             {isAuthenticated ? (
-              <Route path="/" element={<Home />} exact/>
+              <>
+                <Route path="/" element={<Home />} exact/>
+                <Route path="/medical" element={<Medical />} />
+                <Route path="/nutrition" element={<Nutrition />} />
+                <Route path="/settings" element={<Settings />} />
+              </>
             ) : (
               <Route path="" element={<Navigate to="/login" />} />
             )}

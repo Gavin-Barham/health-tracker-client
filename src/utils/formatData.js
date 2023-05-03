@@ -24,15 +24,30 @@ export default function formatData(rows) {
 
                 // Create a new object for this date if it doesn't exist already
                 if (!dataMap.has(date)) {
-                    dataMap.set(date, { date, medicals: {}, nutrition: {} });
+                    dataMap.set(date, { date, medicals: {}, nutrition: {}, exercise: {} });
                 }
 
                 // Add the nutrition object to the data map for this date
                 dataMap.get(date).nutrition = Object.fromEntries(Object.entries(nutrition).filter(([key, value]) => key !== 'date'));
             }
         }
+        if (row.exercises) {
+            // Iterate over each object in the nutrition array
+            for (const exercise of row.exercises) {
+                const date = exercise.date.slice(0, 10); // Extract date portion of ISO string
+            
+                
+                // Create a new object for this date if it doesn't exist already
+                if (!dataMap.has(date)) {
+                    dataMap.set(date, { date, medicals: {}, nutrition: {}, exercise: {} });
+                }
+                
+                // Add the exercise object to the data map for this date
+                dataMap.get(date).exercise = Object.fromEntries(Object.entries(exercise).filter(([key, value]) => key !== 'date'));
+            }
+        }
     }
-
+    
     // Return an array of the values in the data map
     return Array.from(dataMap.values());
 }

@@ -13,3 +13,31 @@ ul{
   padding: 0;
   list-style: none;
 }
+.red{
+  color: #db3006;
+}
+.brown{
+  color: #7f5905;
+}
+.yellow{
+  color: #eba50f;
+}
+.blue{
+  color: #1fa6ea;
+}
+.silver{
+  color: #c6c8c8;
+}
+.white{
+  color: white;
+}
+/* p{
+  color: white;
+} */
+.red,
+.brown,
+.yellow,
+.blue,
+.silver{
+  margin-bottom: .7em;
+}

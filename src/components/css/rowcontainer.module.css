@@ -1,4 +1,6 @@
 .container {
-    display: grid;
-    grid-template-areas: a b c;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1em;
+    gap: 2em;
 }

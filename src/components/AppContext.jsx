@@ -10,6 +10,8 @@ const HealthProvider = ({ children }) => {
     const [userId, setUserId] = useState(id)
     const [dashboard, setDashboard] = useState({})
     const [timeSpan, setTimeSpan] = useState([date,date])
+    const [selectedDay, setSelectedDay] = useState(date)
+    const [modifyDate, setModifyDate] = useState(date)
 
     const value = {
         isAuthenticated,
@@ -20,6 +22,10 @@ const HealthProvider = ({ children }) => {
         setDashboard,
         timeSpan,
         setTimeSpan,
+        selectedDay,
+        setSelectedDay,
+        modifyDate,
+        setModifyDate
     }
 
     return <HealthContext.Provider value={value}>{children}</HealthContext.Provider>
